@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Water Demand Search</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <h1>Search Water Demand</h1>
+    <label for="accountId">Account ID:</label>
+    <input type="text" id="accountId" name="accountId" />
+    <button id="searchBtn">Search</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const accountId = document.getElementById('accountId').value;
+            if (!accountId) {
+                alert('Please enter Account ID');
+                return;
+            }
+
+            // Create JSON payload
+            const payload = { account_id: accountId };
+            const jsonString = JSON.stringify(payload);
+
+            // Encrypt the JSON string using AES-128-ECB
+            const key = 'L8P-56FV8^#Ek7kT'; // Note: In production, this should not be hardcoded
+            const encryptedData = encryptAES128ECB(jsonString, key);
+
+            // Send POST request to /water-demand
+            fetch('/water-demand', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ encryptedData: encryptedData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error occurred';
+            });
+        });
+
+        function encryptAES128ECB(text, key) {
+            const keyBytes = CryptoJS.enc.Utf8.parse(key);
+            const encrypted = CryptoJS.AES.encrypt(text, keyBytes, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            return encrypted.toString();
+        }
+    </script>
+</body>
+</html>

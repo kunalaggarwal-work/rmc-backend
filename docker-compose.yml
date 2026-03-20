@@ -1,0 +1,26 @@
+version: '2.1'
+
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: rmc_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: allTech
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "9091:9091"
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+volumes:
+  postgres_data:
+    driver: local

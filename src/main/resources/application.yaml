@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: rmc-be
+  profiles:
+    active: dev
+server:
+  port: 9091
