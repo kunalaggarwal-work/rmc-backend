@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: rmc-backend-deployment
+    namespace: rmc-be
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: rmc-backend
+    template:
+        metadata:
+          name: rmc-backend-pod
+          namespace: rmc-be
+          labels:
+            app: rmc-backend
+        spec:
+          containers:
+            - name: rmc-backend-container
+              image: kunalaggarwal05/rmc-be:latest
+              imagePullPolicy: Always
+              ports:
+                - containerPort: 9091
+              env:
+                - name: SPRING_PROFILES_ACTIVE
+                  value: "dev"
