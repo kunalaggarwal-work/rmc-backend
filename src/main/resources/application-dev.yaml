@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST}}:${DB_PORT}/${DB_NAME}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     hikari:
@@ -16,7 +16,25 @@ spring:
     hibernate:
       ddl-auto: update
 
+  application:
+    name: rmc-be
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
 
 rmc-props:
   en-aes-key: L8P-56FV8^#Ek7kT
   encrypt-response: true
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${REG_SERVICE_NAME}:8761/eureka/
+#  instance:
+#    preferIpAddress: true

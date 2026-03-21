@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warmc-backend-deployment
+  namespace: rmc-be
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: warmc-backend
+  template:
+    metadata:
+      name: warmc-backend-pod
+      namespace: rmc-be
+      labels:
+        app: warmc-backend
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: postgres:14
+          command:
+            - sh
+            - -c
+            - |
+              until PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-service -U postgres -d postgres -c "SELECT 1" 2>/dev/null; do
+                echo "Waiting for PostgreSQL to be ready..."
+                sleep 3
+              done
+              echo "PostgreSQL is ready!"
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: allTech
+      containers:
+        - name: warmc-backend-container
+          image: kunalaggarwal05/warmc-be:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9092
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: allTech
+            - name: DB_HOST
+              value: postgres-service
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: wa_rmc
+            - name: REG_SERVICE_NAME
+              value: reg-service
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9092
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9092
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9092
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3

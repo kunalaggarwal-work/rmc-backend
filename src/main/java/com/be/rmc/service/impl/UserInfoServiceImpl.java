@@ -26,22 +26,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         log.info("Going to call - validateUser api  function defined in whatsapp template service to validate user with userId -{} ", userId);
 
-//        User user = rmcFeignInterface.validateUser(userId).getBody();
-//
-//        log.info("user details received from whatsapp template service for user with userId -{} is -{} ", userId, user);
-//
-//        if(user == null) return false;
-//
-//        // create DB entry for user if validated
-//        log.info("User validated successfully, thus going to create DB entry for user with userId -{} ", userId);
-//
-//        consumerTransactionDetailsRepository.save(ConsumerTransactionDetails.builder()
-//                        .phoneNumber(user.getMobileNumber())
-//                        .userEmail("TestUser@gmail.com")
-//                        .userName(user.getName())
-//                .build());
-//
-//        log.info("User details saved successfully in DB for user with userId -{} ", userId);
+        User user = rmcFeignInterface.validateUser(userId).getBody();
+
+        log.info("user details received from whatsapp template service for user with userId -{} is -{} ", userId, user);
+
+        if(user == null) return false;
+
+        // create DB entry for user if validated
+        log.info("User validated successfully, thus going to create DB entry for user with userId -{} ", userId);
+
+        consumerTransactionDetailsRepository.save(ConsumerTransactionDetails.builder()
+                        .phoneNumber(user.getMobileNumber())
+                        .userEmail("TestUser@gmail.com")
+                        .userName(user.getName())
+                .build());
+
+        log.info("User details saved successfully in DB for user with userId -{} ", userId);
 
         return true;
     }

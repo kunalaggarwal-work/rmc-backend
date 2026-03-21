@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reg-service
+  namespace: rmc-be
+spec:
+  selector:
+    app: service-reg
+  ports:
+    - port: 8761
+      targetPort: 8761

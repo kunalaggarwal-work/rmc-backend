@@ -25,12 +25,21 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: allTech
-            - name: DB_HOST
-              value: postgres-service
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
+            - name: POSTGRES_DB
               value: rmc_test
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U postgres
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:

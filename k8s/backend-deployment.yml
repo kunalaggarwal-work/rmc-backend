@@ -15,6 +15,23 @@ spec:
           labels:
             app: rmc-backend
         spec:
+          initContainers:
+            - name: wait-for-db
+              image: postgres:14
+              command:
+                - sh
+                - -c
+                - |
+                  until PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-service -U postgres -d postgres -c "SELECT 1" 2>/dev/null; do
+                    echo "Waiting for PostgreSQL to be ready..."
+                    sleep 3
+                  done
+                  echo "PostgreSQL is ready!"
+              env:
+                - name: POSTGRES_USER
+                  value: postgres
+                - name: POSTGRES_PASSWORD
+                  value: allTech
           containers:
             - name: rmc-backend-container
               image: kunalaggarwal05/rmc-be:latest
@@ -22,5 +39,39 @@ spec:
               ports:
                 - containerPort: 9091
               env:
-                - name: SPRING_PROFILES_ACTIVE
-                  value: "dev"
+                - name: POSTGRES_USER
+                  value: postgres
+                - name: POSTGRES_PASSWORD
+                  value: allTech
+                - name: DB_HOST
+                  value: postgres-service
+                - name: DB_PORT
+                  value: "5432"
+                - name: DB_NAME
+                  value: rmc_test
+                - name: REG_SERVICE_NAME
+                  value: reg-service
+              startupProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 9091
+                initialDelaySeconds: 40
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 30
+              readinessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 9091
+                initialDelaySeconds: 20
+                periodSeconds: 10
+                timeoutSeconds: 5
+                failureThreshold: 3
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 9091
+                initialDelaySeconds: 60
+                periodSeconds: 15
+                timeoutSeconds: 5
+                failureThreshold: 3
