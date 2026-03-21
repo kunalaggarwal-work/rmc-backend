@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://db:5432/rmc_test
-    username: postgres
-    password: allTech
+    url: jdbc:postgresql://${DB_HOST}}:${DB_PORT}/${DB_NAME}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     hikari:
       max-lifetime: 300000
       connection-timeout: 30000

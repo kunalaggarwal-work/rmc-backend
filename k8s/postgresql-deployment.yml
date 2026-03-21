@@ -25,7 +25,11 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: allTech
-            - name: POSTGRES_DB
+            - name: DB_HOST
+              value: postgres-service
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
               value: rmc_test
       volumes:
         - name: postgres-storage
