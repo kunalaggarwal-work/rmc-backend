@@ -7,5 +7,5 @@ spec:
   selector:
     app: warmc-backend
   ports:
-    - port: 9092
+    - port: 80
       targetPort: 9092

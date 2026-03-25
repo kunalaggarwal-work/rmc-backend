@@ -10,3 +10,4 @@ spec:
     storage: 5Gi
   hostPath:
     path: /data/pv0001/
+    type: DirectoryOrCreate

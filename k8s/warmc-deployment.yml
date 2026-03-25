@@ -49,8 +49,6 @@ spec:
               value: "5432"
             - name: DB_NAME
               value: wa_rmc
-            - name: REG_SERVICE_NAME
-              value: reg-service
           startupProbe:
             httpGet:
               path: /actuator/health

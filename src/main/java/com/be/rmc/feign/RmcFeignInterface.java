@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("WHATSAPP-TEMPLATE-BE")
+@FeignClient(name = "warmc-service", url = "http://warmc-service")
 public interface RmcFeignInterface {
 
     @PostMapping("/validateUser")
