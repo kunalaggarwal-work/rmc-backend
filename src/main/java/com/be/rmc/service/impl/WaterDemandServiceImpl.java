@@ -88,22 +88,35 @@ public class WaterDemandServiceImpl implements WaterDemandService {
                         data
                 );
 
+                String apiResponseJson = "", finalJson = "";
+
                 if(encryptResponse){
-                    String apiResponseJson = objectMapper.writeValueAsString(apiResponse);
-                    String encryptedApiResponse = encryptAES128ECB(apiResponseJson, encryptedAesKey);
-                    return new ApiResponse(
-                            "success",
-                            HttpStatus.OK.value(),
-                            "Water details fetch successfully.",
-                            Map.of("data", encryptedApiResponse)
-                    );
+                     apiResponseJson = objectMapper.writeValueAsString(apiResponse);
+                    finalJson = encryptAES128ECB(apiResponseJson, encryptedAesKey);
+                }
+                else{
+                    finalJson = apiResponseJson;
                 }
 
+                // accountId prod : RANWC38247384141
                 log.info("Going to save water demand details in DB for accountId: {}", payWaterDemandDTO.getAccountId());
 
                 // TODO : update DB entry
+                consumerTransactionDetailsRepository.save(ConsumerTransactionDetails.builder()
+                                .phoneNumber("917011229278")
+                                .userEmail("kunalaggarwal05@gmail.com")
+                                .userName("Kunal")
+                                .accountId(payWaterDemandDTO.getAccountId())
+                                .rmcApiResponse(apiResponseJson)
 
-                return apiResponse;
+                        .build());
+
+                return new ApiResponse(
+                        "success",
+                        HttpStatus.OK.value(),
+                        "Water details fetch successfully.",
+                        Map.of("data", finalJson)
+                );
             }
 
             if (status == HttpStatus.NOT_FOUND.value()) {

@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rmc_test
+    username: postgres
+    password: allTech
+    hikari:
+      max-lifetime: 300000
+      connection-timeout: 30000
+      idle-timeout: 600000
+      minimum-idle: 10
+      maximum-pool-size: 20
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+  application:
+    name: rmc-be
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+rmc-props:
+  en-aes-key: L8P-56FV8^#Ek7kT
+  encrypt-response: true
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${REG_SERVICE_NAME}:8761/eureka/
+#  instance:
+#    preferIpAddress: true
