@@ -15,7 +15,7 @@ spec:
       labels:
         app: warmc-backend
     spec:
-      initContainers:
+      initContainers:v
         - name: wait-for-db
           image: postgres:14
           command:
@@ -49,6 +49,8 @@ spec:
               value: "5432"
             - name: DB_NAME
               value: wa_rmc
+            - name: RMC_DOMAIN
+              value: localhost
           startupProbe:
             httpGet:
               path: /actuator/health

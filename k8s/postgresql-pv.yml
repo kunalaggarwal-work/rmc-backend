@@ -1,13 +1,30 @@
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: postgresql-pv
+#  namespace: rmc-be
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  capacity:
+#    storage: 5Gi
+#  hostPath:
+#    path: /data/
+#    type: DirectoryOrCreate
+
+
+#//FOR  KIND setup
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: postgresql-pv
-  namespace: rmc-be
+
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: ""
   capacity:
     storage: 5Gi
   hostPath:
-    path: /data/
+    path: /data
     type: DirectoryOrCreate

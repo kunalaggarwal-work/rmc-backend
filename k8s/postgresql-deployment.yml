@@ -44,3 +44,5 @@ spec:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgresql-pvc
+      nodeSelector:
+        kubernetes.io/hostname: tws-cluster-worker2

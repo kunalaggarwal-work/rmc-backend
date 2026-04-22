@@ -99,17 +99,19 @@ public class WaterDemandServiceImpl implements WaterDemandService {
                 }
 
                 // accountId prod : RANWC38247384141
-                log.info("Going to save water demand details in DB for accountId: {}", payWaterDemandDTO.getAccountId());
-
-                // TODO : update DB entry
-                consumerTransactionDetailsRepository.save(ConsumerTransactionDetails.builder()
-                                .phoneNumber("917011229278")
-                                .userEmail("kunalaggarwal05@gmail.com")
-                                .userName("Kunal")
-                                .accountId(payWaterDemandDTO.getAccountId())
-                                .rmcApiResponse(apiResponseJson)
-
-                        .build());
+//                log.info("Going to save water demand details in DB for accountId: {}", payWaterDemandDTO.getAccountId());
+//
+//
+//                ConsumerTransactionDetails consumerTransactionDetails = consumerTransactionDetailsRepository.findFirstByPhoneNumberAndAccountIdIsNull()
+//                // TODO : update DB entry
+//                consumerTransactionDetailsRepository.save(ConsumerTransactionDetails.builder()
+//                                .phoneNumber("917011229278")
+//                                .userEmail("kunalaggarwal05@gmail.com")
+//                                .userName("Kunal")
+//                                .accountId(payWaterDemandDTO.getAccountId())
+//                                .rmcApiResponse(apiResponseJson)
+//
+//                        .build());
 
                 return new ApiResponse(
                         "success",
