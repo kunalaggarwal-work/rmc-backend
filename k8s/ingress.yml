@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: rmc-be
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    http:
+      paths:
+        # Service 1 → root "/"
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: warmc-service   # 🔁 replace with your service name
+              port:
+                number: 80         # 🔁 replace if different
+
+        # Service 2 → "/rmc-be"
+        - path: /rmc-be
+          pathType: Prefix
+          backend:
+            service:
+              name: backend-service    # 🔁 replace with your service name
+              port:
+                number: 80
